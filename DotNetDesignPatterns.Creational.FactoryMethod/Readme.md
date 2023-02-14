@@ -1,14 +1,13 @@
 ﻿# Factory Method C#
-Factory Method is a design pattern that defines an interface for creating an object, but subclasses decide which implementation to instatiante.
+Factory Method is a design pattern that defines an interface for creating an object, but the creation logic is abstraction from the client.
 
-## Thoughts
-Factory Method is a great pattern to use when there are shared methods and properties, but the implementation varies between use cases.
+| Difficulty | Easy |
 
 ## Example Use Cases
 ### Multiple external APIs that perform similar functionality but on separate SaaS platforms
-Let's say, for example, you've got an CRM SaaS application that uses either Dynamics or SalesForce as it's underlying data platform. A given customer may have their Contact data persisted to the corresponding Dynamics or to Salesforce objects, but you the basic interopability is the same between the platforms.
+Let's say, for example, you've got an CRM SaaS application that uses either Dynamics or SalesForce as it's underlying data platform. A given customer may have their Contact data persisted to the corresponding Dynamics or to Salesforce objects, and instantiation of your clients vary based on customer specific configuration settings.
 
-With a Factory method implementation, you could, for example, have code like this on your Contact form...
+With a Factory Method implementation, you could, for example, have code like this on your Contact form...
 
 `
   var contactDetails = GetContactDetailsFromForm();
@@ -16,10 +15,6 @@ With a Factory method implementation, you could, for example, have code like thi
   contactApi.UpdateContact(contactDetails);
 `
 
-_creator, for example, could be passed as a constructor parameter or there may be separate logic that reads the customer configuration on class creation.
+_creator, you'll notice abstracts the creation of the contactAPI, returning an abstract contactAPI. Buried within the _creator.GetApi() method, your code may for example, check for the existence of a SalesForce.config or Dynamics.config record, which may have completely different structures, and based on which one it finds, it then creates an instance of the appropriate Api, e.g., SalesforceContactApi.
 
-_creator.GetApi() would return a concrete instance of the abstract class ContactApi.
-
-Those concrete implementations, SalesforceContactApi or DynamicsContactApi, would then know how to make the appropriate API calls (SOAP, REST, etc.) to the respective services in order to update the contact.
-
-At a later date, you could also implement other CRM Api Providers, for example, Oracle, Sugar, etc., and doing so would only require creating a compatible ContactApi implementation and modifying _creator.GetApi() to support returning the respective new ContactApi object.
+This abstraction allows usage of the Api to be apathetic to the underlying configuration loading.

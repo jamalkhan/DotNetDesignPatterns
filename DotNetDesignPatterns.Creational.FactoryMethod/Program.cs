@@ -1,4 +1,6 @@
-﻿Console.WriteLine("Hello, World!");
+﻿Console.WriteLine("DotNetDesignPatterns.FactoryMethod");
+Console.WriteLine("Jamal Khan");
+Console.WriteLine("Please view the Readme");
 
 var creators = new List<CarCreator>();
 creators.Add(new SportsCarCreator());
