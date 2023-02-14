@@ -10,11 +10,11 @@ Let's say, for example, you've got an CRM SaaS application that uses either Dyna
 
 With a Factory method implementation, you could, for example, have code like this on your Contact form...
 
-`
+```
   var contactDetails = GetContactDetailsFromForm();
   var contactApi = _creator.GetApi();
   contactApi.UpdateContact(contactDetails);
-`
+```
 
 _creator.GetApi() returns a concrete implementation of the Api, and those concrete implementations (e.g., SalesforceContactApi, DynamicsContactApi), would then know how to make the appropriate API calls (e.g., Rest, SOAP), to perform the respective actions (e.g., UpdateContact, GetContact, DeleteContact).
 
